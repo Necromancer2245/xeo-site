@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Game - Xeo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #1a1a1a 75%, #ffffff 75%, #ffffff 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        nav {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2a2a2a;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #5a5a5a;
+            font-weight: 500;
+            transition: color 0.3s, padding 0.3s, border-bottom 0.3s;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+        }
+
+        nav a:hover {
+            color: #2a2a2a;
+            border-bottom: 2px solid #2a2a2a;
+            padding-bottom: 0.3rem;
+        }
+
+        nav a:active {
+            color: #ff6b6b;
+            border-bottom: 2px solid #ff6b6b;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin: 1rem 2rem;
+            padding: 0.7rem 1.5rem;
+            background-color: #1a1a1a;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background-color 0.3s, transform 0.3s;
+            cursor: pointer;
+        }
+
+        .back-button:hover {
+            background-color: #2a2a2a;
+            transform: translateY(-2px);
+        }
+
+        main {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .download-container {
+            background-color: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            display: flex;
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .game-image {
+            flex: 1;
+            min-width: 300px;
+            max-width: 400px;
+        }
+
+        .game-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .game-info {
+            flex: 1;
+        }
+
+        .game-info h1 {
+            font-size: 2.5rem;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+        }
+
+        .game-info .genre {
+            font-size: 1.2rem;
+            color: #4ecdc4;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .game-info .description {
+            color: #7a7a7a;
+            font-size: 1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .game-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background-color: #f5f5f5;
+            border-radius: 8px;
+        }
+
+        .stat {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat label {
+            color: #5a5a5a;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat value {
+            color: #1a1a1a;
+            font-size: 1.1rem;
+        }
+
+        .download-section {
+            margin-bottom: 2rem;
+        }
+
+        .download-section h3 {
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .file-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+        }
+
+        .file-item:hover {
+            background-color: #efefef;
+        }
+
+        .file-info {
+            flex: 1;
+        }
+
+        .file-name {
+            color: #1a1a1a;
+            font-weight: bold;
+            margin-bottom: 0.3rem;
+        }
+
+        .file-size {
+            color: #7a7a7a;
+            font-size: 0.9rem;
+        }
+
+        .download-btn {
+            padding: 0.8rem 1.5rem;
+            background-color: #ff6b6b;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            font-size: 1rem;
+        }
+
+        .download-btn:hover {
+            background-color: #ff5252;
+            transform: translateY(-2px);
+        }
+
+        .download-btn:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .download-container {
+                flex-direction: column;
+            }
+
+            .game-image {
+                max-width: 100%;
+            }
+
+            .game-info h1 {
+                font-size: 1.8rem;
+            }
+
+            .game-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .error {
+            text-align: center;
+            padding: 3rem;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .error h2 {
+            color: #ff6b6b;
+            margin-bottom: 1rem;
+        }
+
+        .error p {
+            color: #7a7a7a;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-logo">Xeo</div>
+        <ul>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="games.html">Games</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+
+    <a href="home.html" class="back-button">← Back to Home</a>
+
+    <main>
+        <div id="downloadContainer"></div>
+    </main>
+
+    <script>
+        const gamesDatabase = {
+            '7-days-to-die': {
+                title: '7 Days To Die',
+                genre: 'Survival Horror',
+                image: '7D2D.jpg',
+                description: 'Experience a unique blend of first-person shooter, third-person action RPG, and tower defense game. 7 Days to Die is an open-world game that challenges you to survive for as long as possible against the undead while managing your health, hunger, and sanity.',
+                releaseDate: '2013',
+                developer: 'The Fun Pimps',
+                fileSize: '8.5 GB',
+                files: [
+                    { name: '7DaysToDie-Setup.exe', size: '8.5 GB', path: 'downloads/7DaysToDie-Setup.exe' }
+                ]
+            },
+            'need-for-speed-most-wanted-2012': {
+                title: 'Need For Speed: Most Wanted 2012',
+                genre: 'Racing Open-World',
+                image: 'nfswide.jpg',
+                description: 'Hustle by day and risk it all by night in the ultimate adrenaline-charged racing game. You\'re an ex-cop framed by the corrupt police force, trying to reclaim your life and take down the city\'s most wanted criminals.',
+                releaseDate: '2012',
+                developer: 'Criterion Games',
+                fileSize: '12.2 GB',
+                files: [
+                    { name: 'NFS-MostWanted-2012-Setup.zip', size: '12.2 GB', path: 'downloads/nfs2012.zip' }
+                ]
+            },
+            'hollow-knight': {
+                title: 'Hollow Knight',
+                genre: 'RPG Adventure',
+                image: 'hollowknight2.webp',
+                description: 'Venture down into a kingdom of insects and arachnids, below the fog-shrouded peaks. An atmospheric and dependently challenging 2D action adventure awaits intrepid adventurers.',
+                releaseDate: '2017',
+                developer: 'Team Cherry',
+                fileSize: '3.8 GB',
+                files: [
+                    { name: 'HollowKnight-Setup.exe', size: '3.8 GB', path: 'downloads/HollowKnight-Setup.exe' }
+                ]
+            }
+        };
+
+        function getGameIdFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('game');
+        }
+
+        function displayGame() {
+            const gameId = getGameIdFromUrl();
+            const container = document.getElementById('downloadContainer');
+
+            if (!gameId || !gamesDatabase[gameId]) {
+                container.innerHTML = `
+                    <div class="error">
+                        <h2>Game Not Found</h2>
+                        <p>Sorry, the game you're looking for doesn't exist.</p>
+                        <a href="home.html" class="back-button">Return to Home</a>
+                    </div>
+                `;
+                return;
+            }
+
+            const game = gamesDatabase[gameId];
+
+            container.innerHTML = `
+                <div class="download-container">
+                    <div class="game-image">
+                        <img src="${game.image}" alt="${game.title}">
+                    </div>
+                    <div class="game-info">
+                        <h1>${game.title}</h1>
+                        <div class="genre">${game.genre}</div>
+                        <p class="description">${game.description}</p>
+                        
+                        <div class="game-stats">
+                            <div class="stat">
+                                <label>Release Date</label>
+                                <value>${game.releaseDate}</value>
+                            </div>
+                            <div class="stat">
+                                <label>Developer</label>
+                                <value>${game.developer}</value>
+                            </div>
+                            <div class="stat">
+                                <label>File Size</label>
+                                <value>${game.fileSize}</value>
+                            </div>
+                            <div class="stat">
+                                <label>Platform</label>
+                                <value>Windows PC</value>
+                            </div>
+                        </div>
+
+                        <div class="download-section">
+                            <h3>📥 Downloads</h3>
+                            <div class="file-list">
+                                ${game.files.map((file, index) => `
+                                    <div class="file-item">
+                                        <div class="file-info">
+                                            <div class="file-name">${file.name}</div>
+                                            <div class="file-size">${file.size}</div>
+                                        </div>
+                                        <button class="download-btn" onclick="downloadFile('${file.path}', '${file.name}')">Download</button>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function downloadFile(filePath, fileName) {
+            // Create a link element
+            const link = document.createElement('a');
+            link.href = filePath;
+            link.download = fileName;
+            link.style.display = 'none';
+            
+            // Append to body and click
+            document.body.appendChild(link);
+            link.click();
+            
+            // Clean up
+            document.body.removeChild(link);
+        }
+
+        // Display game on page load
+        displayGame();
+    </script>
+</body>
+</html>
